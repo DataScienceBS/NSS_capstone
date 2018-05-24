@@ -128,32 +128,43 @@ $(document).ready(function () {
 
 <div id="data-science-capstone-cohort-1" class="section level1">
 <h1>Data Science Capstone, Cohort 1</h1>
-<div id="walmart" class="section level2">
-<h2>Walmart</h2>
+<div id="walmart.com-product-catalog" class="section level2">
+<h2>Walmart.com Product Catalog</h2>
 <p>Walmart Labs provides an API to pull the catalog of all Walmart.com products. The data is updated every 24 hours, but delta files are available to show changes made within the last few hours. API calls are limited to 5 calls per second and 5,000 per day.</p>
-<pre class="r"><code>print(df, index=FALSE)</code></pre>
-<pre><code>## function (x, df1, df2, ncp, log = FALSE) 
-## {
-##     if (missing(ncp)) 
-##         .Call(C_df, x, df1, df2, log)
-##     else .Call(C_dnf, x, df1, df2, ncp, log)
-## }
-## &lt;bytecode: 0x000000000ab3e480&gt;
-## &lt;environment: namespace:stats&gt;</code></pre>
+<pre><code>##   Parent_Category_Title Total_Related_Category
+## 1 Arts, Crafts &amp; Sewing                     22
+## 2          Auto &amp; Tires                     13
+## 3                  Baby                     21
+## 4                Beauty                     11
+## 5                 Books                     50
+## 6           Cell Phones                     11</code></pre>
 </div>
-<div id="approach" class="section level2">
-<h2>Approach</h2>
+<div id="project-approach" class="section level2">
+<h2>Project Approach</h2>
 <p>The goal of this capstone project is to develop a process using NLP to categorize titles by their title name, short description, and long description. Challenges identified include the size of the data, variety of categories, and opportunity for a title to fall into multiple categories. The Book parent alone has 50 categories, with 1,282 subcategories.</p>
 <p>I will use the Walmart dataset, split as training and test data, and target specific categories and sub-categories that are more easily identifiable, such as Mother’s Day, Father’s Day, Pride Month, and Summer Reading Lists. Using the category codes identified in the initial API requests, I can pull title level data for targeted categories.</p>
+<pre><code>##                     cat                 sub_cat               sub_id
+## 1  Arts &amp; Entertainment            Architecture  3920_582321_4942684
+## 2  Arts &amp; Entertainment                     Art  3920_582321_6907922
+## 3  Arts &amp; Entertainment                  Design  3920_582321_9365291
+## 4  Arts &amp; Entertainment             Music Books  3920_582321_1318217
+## 5  Arts &amp; Entertainment   Performing Arts Books  3920_582321_6572320
+## 6  Arts &amp; Entertainment             Photography  3920_582321_5674104
+## 7  Back to School Books    Back to School Books         3920_8955258
+## 8 Biographies &amp; Memoirs Adventurers &amp; Explorers 3920_5196470_9289082</code></pre>
+<pre><code>##     itemId                                                         name
+## 1 20438802                                                       I Am J
+## 2 15022536 Queer America : A People's Glbt History of the United States
+## 3  1996733                          Same-Sex Unions in Premodern Europe</code></pre>
 </div>
-<div id="steps" class="section level2">
-<h2>Steps</h2>
+<div id="project-steps" class="section level2">
+<h2>Project Steps</h2>
 <ol style="list-style-type: decimal">
 <li>Pull category data from API, identify categories to pull, and ingest item level data.</li>
 <li>Identify necessary fields, clean data for missing values and irrelevant symbols.</li>
 <li>Develop training and test datasets for developing NLP models</li>
-<li>Review potential for pricing data (marketplace data)</li>
 <li>Consider mapping company sales trends with holiday title selections by category (Mother’s Day title sales annually, expect a peak in May)</li>
+<li>Consider NLP visualizations, clustering, category overlap</li>
 </ol>
 </div>
 </div>

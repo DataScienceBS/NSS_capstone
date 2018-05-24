@@ -50,6 +50,10 @@ for (i in (1:(df[[5,3]]))){
 
 # remove any dupes 
 df_book_cats <- unique(df_book_cats)
+rownames(df_book_cats) <- NULL 
+
+saveRDS(df_book_cats, file="df_book_cats.RDS")
+saveRDS(df, file="df.RDS")
 
 #####################################################################
 
@@ -171,3 +175,7 @@ for (j in (1:length(accumulator))){
       pride_search = plyr::rbind.fill(full_search, iterator)
     }
 }
+
+saveRDS(pride_search, file="pride_search.RDS")
+
+glimpse(pride_search)
