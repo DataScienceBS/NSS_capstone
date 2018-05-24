@@ -1,0 +1,173 @@
+library(jsonlite)         # Convert R objects to/from JSON
+library(plyr)             # Tools for Splitting, Applying and Combining Data
+
+#WMT API Key: a8yt7dtv7vjgtq8waassmhra
+# For Taxonomy API, the only parameter you need to specify is "format" (either json or 
+taxonomy_url <- "http://api.walmartlabs.com/v1/taxonomy?format=json&apiKey=a8yt7dtv7vjgtq8waassmhra"
+tax_list <- jsonlite::read_json(taxonomy_url)
+
+# Return 31 categories as of 5/22/18
+length(tax_list$categories)
+df = data.frame(Parent_Category = character(0))
+
+# Create a taxonomy dataframe containing parent category id, parent category title, and total number of related categories
+for (j in (1:length(tax_list$categories))){
+  k1 = tax_list$categories[[j]]$id
+  k2 = tax_list$categories[[j]]$name
+  k3 = length(tax_list$categories[[j]]$children)
+  df2 <- data.frame(Parent_Category_ID = k1,
+                    Parent_Category_Title= k2,
+                    Total_Related_Category = k3)
+  df <- rbind(df, df2)
+}
+rm(df2)
+head(df, 5)
+
+df[[5,3]] #--- 50 sub-categories for books
+
+
+#####################################################################
+##  identifying all sub-categories of books (50 categories, 1287)  ##
+#####################################################################
+df_book_cats <- data.frame(cat=character(), cat_id=character(), sub_cat=character(), sub_id=character(), stringsAsFactors=FALSE)
+
+count <- 0    # start at one and increment immediately to skip NULL values from header
+for (i in (1:(df[[5,3]]))){
+  count <- count + 1
+  a <- tax_list$categories[[5]]$children[[count]]$name
+  a1 <- tax_list$categories[[5]]$children[[count]]$id
+#  print(paste0("count ",a))
+#  df_book_cats[nrow(df_book_cats) + 1,] = c(a,a1)
+  count_sub <- 0
+  for (j in (1:length(tax_list$categories[[5]]$children[[count]]$children))){
+    count_sub <- count_sub + 1
+    b <- tax_list$categories[[5]]$children[[count]]$children[[count_sub]]$name
+    b1 <- tax_list$categories[[5]]$children[[count]]$children[[count_sub]]$id
+#    print(paste0("count sub ",b))
+    df_book_cats[nrow(df_book_cats) + 1,] = c(a,a1,b,b1)
+  }
+}
+
+# remove any dupes 
+df_book_cats <- unique(df_book_cats)
+
+#####################################################################
+
+
+
+
+
+
+
+
+
+#Book Category is 3920 (pulled from taxonomy list). Finding item IDs, trying to find mapping to 978
+books_url <- "http://api.walmartlabs.com/v1/paginated/items?category=3920_5867480&apiKey=a8yt7dtv7vjgtq8waassmhra&format=json"
+book_list <- jsonlite::read_json(books_url)
+View(book_list)
+
+
+#lookup item ID from book_list, try to find 978
+cat_url <- "http://api.walmartlabs.com/v1/items/189609?apiKey=a8yt7dtv7vjgtq8waassmhra&format=json"
+cat_test <- jsonlite::read_json(cat_url)
+View(cat_test)
+
+
+#trending items, limited to 25
+trending_url <- "http://api.walmartlabs.com/v1/trends?apiKey=a8yt7dtv7vjgtq8waassmhra&format=json"
+trending <- jsonlite::read_json(trending_url)
+
+#Best Sellers in their respective categories (Books = 3920)
+best_url <- "http://api.walmartlabs.com/v1/feeds/bestsellers?apikey=a8yt7dtv7vjgtq8waassmhra&amp;categoryId=3920"
+best_sellers <- jsonlite::read_json(best_url)
+
+
+#creating large df
+
+accumulator = c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
+                "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
+length(accumulator) # 26
+accumulator[1] #a
+accumulator[2] #b
+accumulator[3] #c
+accumulator[4] #d
+accumulator[5] #e
+accumulator[6] 
+accumulator[7] #g
+accumulator[8] 
+accumulator[9] #i
+accumulator[10] #j
+accumulator[11] #k
+accumulator[12] #l
+accumulator[13] 
+accumulator[14] 
+accumulator[15] #o
+accumulator[16] #p
+accumulator[17]
+accumulator[18] 
+accumulator[19] #s
+accumulator[20] 
+accumulator[21] #u
+accumulator[22] 
+accumulator[23] #w
+accumulator[24] 
+accumulator[25] #y
+accumulator[26] #z
+
+full_search = data.frame(itemId = character(0), 
+                         name= character(0), 
+                         msrp = character(0),
+                         salePrice = character(0),
+                         upc = character(0),
+                         categoryPath = character(0),
+                         shortDescription = character(0),
+                         longDescription= character(0), 
+                         brandName= character(0), 
+                         thumbnailImage = character(0),
+                         mediumImage = character(0),
+                         largeImage = character(0),
+                         productTrackingUrl = character(0),
+                         ninetySevenCentShipping = character(0),
+                         standardShipRate= character(0), 
+                         size= character(0), 
+                         color = character(0),
+                         marketplace = character(0),
+                         shipToStore = character(0),
+                         freeShipToStore = character(0),
+                         modelNumber = character(0),
+                         productUrl= character(0), 
+                         customerRating= character(0), 
+                         numReviews = character(0),
+                         variants = character(0),
+                         customerRatingImage = character(0),
+                         categoryNode = character(0),
+                         bundle = character(0),
+                         clearance= character(0), 
+                         preOrder= character(0), 
+                         stock = character(0),
+                         attributes = character(0),
+                         addToCartUrl = character(0),
+                         affiliateAddToCartUrl = character(0),
+                         freeShippingOver50Dollars = character(0),
+                         maxItemsInOrder = character(0),
+                         giftOptions = character(0),
+                         imageEntities = character(0),
+                         offerType = character(0),
+                         isTwoDayShippingEligible = character(0), 
+                         availableOnline= character(0),
+                         parentItemId = character(0),
+                         sellerInfo = character(0),
+                         seeDetailsInCart = character(0)
+)
+
+for (j in (1:length(accumulator))){
+    Sys.sleep(0.5)
+    url <- paste('http://api.walmartlabs.com/v1/search?query=', accumulator[j], 
+                 '&format=json&categoryId=3920_5867480&apiKey=a8yt7dtv7vjgtq8waassmhra&numItems=25', sep = "")
+    for (m in url){
+      Sys.sleep(0.5)
+      query_list = jsonlite::read_json(m)
+      iterator = plyr::rbind.fill(lapply(query_list$items, function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}))
+      pride_search = plyr::rbind.fill(full_search, iterator)
+    }
+}
