@@ -50,32 +50,29 @@ for (i in (1:(df[[5,3]]))){
 
 # remove any dupes 
 df_book_cats <- unique(df_book_cats)
+
+cat_list <- unique(df_book_cats$cat_id) #length 50
+sub_cat_list <- unique(df_book_cats$sub_id) #length  1286 
+
 rownames(df_book_cats) <- NULL 
 
 saveRDS(df_book_cats, file="df_book_cats.RDS")
 saveRDS(df, file="df.RDS")
 
+
+
 #####################################################################
-
-
-
-
-
-
-
-
-
+#####################################################################
+#                           exploratory fun                         #
+#####################################################################
+#####################################################################
 #Book Category is 3920 (pulled from taxonomy list). Finding item IDs, trying to find mapping to 978
 books_url <- "http://api.walmartlabs.com/v1/paginated/items?category=3920_5867480&apiKey=a8yt7dtv7vjgtq8waassmhra&format=json"
 book_list <- jsonlite::read_json(books_url)
-View(book_list)
-
 
 #lookup item ID from book_list, try to find 978
 cat_url <- "http://api.walmartlabs.com/v1/items/189609?apiKey=a8yt7dtv7vjgtq8waassmhra&format=json"
 cat_test <- jsonlite::read_json(cat_url)
-View(cat_test)
-
 
 #trending items, limited to 25
 trending_url <- "http://api.walmartlabs.com/v1/trends?apiKey=a8yt7dtv7vjgtq8waassmhra&format=json"
@@ -86,38 +83,17 @@ best_url <- "http://api.walmartlabs.com/v1/feeds/bestsellers?apikey=a8yt7dtv7vjg
 best_sellers <- jsonlite::read_json(best_url)
 
 
-#creating large df
+##############################################################################
+################  API and data exploration complete. #########################
+################   Pulling catalog data for project. #########################
+##############################################################################
+library(jsonlite)         # Convert R objects to/from JSON
+library(plyr)             # Tools for Splitting, Applying and Combining Data
 
 accumulator = c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
                 "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
-length(accumulator) # 26
-accumulator[1] #a
-accumulator[2] #b
-accumulator[3] #c
-accumulator[4] #d
-accumulator[5] #e
-accumulator[6] 
-accumulator[7] #g
-accumulator[8] 
-accumulator[9] #i
-accumulator[10] #j
-accumulator[11] #k
-accumulator[12] #l
-accumulator[13] 
-accumulator[14] 
-accumulator[15] #o
-accumulator[16] #p
-accumulator[17]
-accumulator[18] 
-accumulator[19] #s
-accumulator[20] 
-accumulator[21] #u
-accumulator[22] 
-accumulator[23] #w
-accumulator[24] 
-accumulator[25] #y
-accumulator[26] #z
 
+#creating large df
 full_search = data.frame(itemId = character(0), 
                          name= character(0), 
                          msrp = character(0),
@@ -164,18 +140,22 @@ full_search = data.frame(itemId = character(0),
                          seeDetailsInCart = character(0)
 )
 
-for (j in (1:length(accumulator))){
-    Sys.sleep(0.5)
-    url <- paste('http://api.walmartlabs.com/v1/search?query=', accumulator[j], 
-                 '&format=json&categoryId=3920_5867480&apiKey=a8yt7dtv7vjgtq8waassmhra&numItems=25', sep = "")
-    for (m in url){
-      Sys.sleep(0.5)
-      query_list = jsonlite::read_json(m)
-      iterator = plyr::rbind.fill(lapply(query_list$items, function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}))
-      pride_search = plyr::rbind.fill(full_search, iterator)
-    }
+
+for(cat in sub_cat_list){
+  for (j in (1:length(accumulator))){
+      url <- paste('http://api.walmartlabs.com/v1/search?query=', accumulator[j], 
+                   '&format=json&categoryId=', cat, '&apiKey=a8yt7dtv7vjgtq8waassmhra&numItems=25', sep = "")
+      for (m in url){
+        query_list = jsonlite::read_json(m)
+        iterator = plyr::rbind.fill(lapply(query_list$items, function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}))
+        full_search = plyr::rbind.fill(full_search, iterator)
+        Sys.sleep(1.0)
+      }
+  }
 }
 
-saveRDS(pride_search, file="pride_search.RDS")
+full_search <- unique(full_search)
 
-glimpse(pride_search)
+saveRDS(full_search, file="full_search_6_14.RDS")
+
+  
