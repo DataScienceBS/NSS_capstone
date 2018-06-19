@@ -1,0 +1,47 @@
+---
+title: "Capstone Approach"
+author: "Brandon Sanders"
+date: "May 24, 2018"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+df_book_cats <- readRDS("df_book_cats.RDS") 
+df <- readRDS("df.RDS") 
+pride_search <- readRDS("pride_search.RDS") 
+```
+
+# Data Science Capstone, Cohort 1
+## Walmart.com Product Catalog 
+
+Walmart Labs provides an API to pull the catalog of all Walmart.com products. The data is updated every 24 hours, but delta files are available to show changes made within the last few hours. API calls are limited to 5 calls per second and 5,000 per day. 
+
+
+```{r cats, echo=FALSE, message=FALSE, warning=FALSE}
+head(df[2:3], index=FALSE)
+```
+
+## Project Approach
+
+The goal of this capstone project is to develop a process using NLP to categorize titles by their title name, short description, and long description. Challenges identified include the size of the data, variety of categories, and opportunity for a title to fall into multiple categories. The Book parent alone has 50 categories, with 1,282 subcategories.  
+ 
+I will use the Walmart dataset, split as training and test data, and target specific categories and sub-categories that are more easily identifiable, such as Mother's Day, Father's Day, Pride Month, and Summer Reading Lists. Using the category codes identified in the initial API requests, I can pull title level data for targeted categories.
+
+```{r subcats, echo=FALSE, fig.width=600, message=FALSE, warning=FALSE}
+head(df_book_cats, 8, index=FALSE)
+```
+
+
+```{r pride, echo=FALSE, message=FALSE, warning=FALSE}
+head(pride_search[1:2])
+```
+
+## Project Steps
+
+1. Pull category data from API, identify categories to pull, and ingest item level data. 
+2. Identify necessary fields, clean data for missing values and irrelevant symbols.
+3. Develop training and test datasets for developing NLP models
+4. Consider mapping company sales trends with holiday title selections by category (Mother's Day title sales annually, expect a peak in May)
+5. Consider NLP visualizations, clustering, category overlap  
+  
+  
