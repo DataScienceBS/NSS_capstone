@@ -13,7 +13,6 @@ df_9 <- readRDS('private/full_search_6_22.RDS')
 df_10 <- readRDS('private/full_search_6_23.RDS')
 df_11 <- readRDS('private/full_search_6_23b.RDS') 
 df_12 <- readRDS('private/full_search_6_25.RDS') 
-####add new df here####
 
 ##############################################################################
 #################  Cleaning data into useful format ##########################
@@ -34,15 +33,9 @@ df_10 <- data.frame(df_10$name, df_10$categoryPath, df_10$shortDescription, df_1
 df_11 <- data.frame(df_11$name, df_11$categoryPath, df_11$shortDescription, df_11$longDescription, df_11$modelNumber, df_11$categoryNode, df_11$itemId, df_11$parentItemId, stringsAsFactors=FALSE)
 df_12 <- data.frame(df_12$name, df_12$categoryPath, df_12$shortDescription, df_12$longDescription, df_12$modelNumber, df_12$categoryNode, df_12$itemId, df_12$parentItemId, stringsAsFactors=FALSE)
 
-####add new df here####
 #df_12 <- data.frame(df_12$name, df_12$categoryPath, df_12$shortDescription, df_12$longDescription, df_12$modelNumber, df_12$categoryNode, df_12$itemId, df_12$parentItemId, stringsAsFactors=FALSE)
 
-df_list <- c("df_1", "df_2", "df_3", "df_4", "df_5", "df_6", "df_7", "df_8", "df_9", "df_10", "df_11", "df_12")
 colname_list <- c("name", "categoryPath", "shortDn", "longDn", "model", "catNode", "itemId","parentItemId")
-
-# for(df_name in df_list){
-#   colnames(df_name) <- colname_list
-# }
 
 colnames(df) <- colname_list
 colnames(df_1) <- colname_list
@@ -58,37 +51,15 @@ colnames(df_10) <- colname_list
 colnames(df_11) <- colname_list 
 colnames(df_12) <- colname_list 
 
-####add new df here####
-
-#cleanFun <- function(htmlString) {
-#  return(gsub("<.*?>", "", htmlString))
-#}
-
-#tag_test <- gsub("<.*?>", "", df_1$longDn[3])
-
 #--- formatting data so HTML tags appear ==> easier to replace
 library(XML)
-
-#################### to be deleted ####################
-df_temp <- df_1[1:5,]
-tag_test <- df_temp$longDn[3]
-#################### to be deleted ####################
 
 #--- function to replace text with HTML tags
 html2txt <- function(str) {
   xpathApply(htmlParse(str, asText=TRUE, encoding = ),
              "//body//text()", 
              xmlValue)[[1]] 
-}
-
-
-#### testing for loop on 5 rows
-# df_temp <- df_1[1:5,]
-# 
-# for (row in 1:nrow(df_temp)){
-#   df_temp$longDn[row] <- html2txt(df_temp$longDn[row])
-# }
-# print(df_temp$longDn[3])
+  }
 
 #### processing each df individually ####
 for (row in 1:nrow(df_1)){
@@ -151,16 +122,11 @@ for (row in 1:nrow(df_12)){
   df_12$longDn[row] <- html2txt(df_12$longDn[row])
 } 
 
-####add new df here####
-
-####add new df here####
 df <- rbind(df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10, df_11, df_12) #combining all dfs 
 df <- unique(df)  #removing dupes
 
 ## removing pipes from any data to ensure pipe delimited is clean ##
 df[] <- lapply(df, gsub, pattern = "|", replacement = "", fixed = TRUE)
-
-#df$longDn = gsub("\\|", "", df$longDn)
 
 #### write to csv ####
 write.table(df_1, 'private/small_R_df.csv', sep='|')
