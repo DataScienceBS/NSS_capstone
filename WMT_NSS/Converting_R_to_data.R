@@ -13,6 +13,9 @@ df_9 <- readRDS('private/full_search_6_22.RDS')
 df_10 <- readRDS('private/full_search_6_23.RDS')
 df_11 <- readRDS('private/full_search_6_23b.RDS') 
 df_12 <- readRDS('private/full_search_6_25.RDS') 
+df_13 <- readRDS('private/health_and_business_cats.RDS') 
+df_14 <- readRDS('private/health_and_business_cats.RDS2') 
+df_15 <- readRDS('private/health_and_business_cats.RDS3') 
 
 ##############################################################################
 #################  Cleaning data into useful format ##########################
@@ -32,8 +35,10 @@ df_9 <- data.frame(df_9$name, df_9$categoryPath, df_9$shortDescription, df_9$lon
 df_10 <- data.frame(df_10$name, df_10$categoryPath, df_10$shortDescription, df_10$longDescription, df_10$modelNumber, df_10$categoryNode, df_10$itemId, df_10$parentItemId, stringsAsFactors=FALSE)
 df_11 <- data.frame(df_11$name, df_11$categoryPath, df_11$shortDescription, df_11$longDescription, df_11$modelNumber, df_11$categoryNode, df_11$itemId, df_11$parentItemId, stringsAsFactors=FALSE)
 df_12 <- data.frame(df_12$name, df_12$categoryPath, df_12$shortDescription, df_12$longDescription, df_12$modelNumber, df_12$categoryNode, df_12$itemId, df_12$parentItemId, stringsAsFactors=FALSE)
+df_13 <- data.frame(df_13$name, df_13$categoryPath, df_13$shortDescription, df_13$longDescription, df_13$modelNumber, df_13$categoryNode, df_13$itemId, df_13$parentItemId, stringsAsFactors=FALSE)
+df_14 <- data.frame(df_14$name, df_14$categoryPath, df_14$shortDescription, df_14$longDescription, df_14$modelNumber, df_14$categoryNode, df_14$itemId, df_14$parentItemId, stringsAsFactors=FALSE)
+df_15 <- data.frame(df_15$name, df_15$categoryPath, df_15$shortDescription, df_15$longDescription, df_15$modelNumber, df_15$categoryNode, df_15$itemId, df_15$parentItemId, stringsAsFactors=FALSE)
 
-#df_12 <- data.frame(df_12$name, df_12$categoryPath, df_12$shortDescription, df_12$longDescription, df_12$modelNumber, df_12$categoryNode, df_12$itemId, df_12$parentItemId, stringsAsFactors=FALSE)
 
 colname_list <- c("name", "categoryPath", "shortDn", "longDn", "model", "catNode", "itemId","parentItemId")
 
@@ -50,6 +55,10 @@ colnames(df_9) <- colname_list
 colnames(df_10) <- colname_list
 colnames(df_11) <- colname_list 
 colnames(df_12) <- colname_list 
+colnames(df_13) <- colname_list 
+colnames(df_14) <- colname_list 
+colnames(df_15) <- colname_list 
+
 
 #--- formatting data so HTML tags appear ==> easier to replace
 library(XML)
@@ -122,7 +131,22 @@ for (row in 1:nrow(df_12)){
   df_12$longDn[row] <- html2txt(df_12$longDn[row])
 } 
 
-df <- rbind(df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10, df_11, df_12) #combining all dfs 
+for (row in 1:nrow(df_13)){
+  df_13$shortDn[row] <- html2txt(df_13$shortDn[row])
+  df_13$longDn[row] <- html2txt(df_13$longDn[row])
+}
+
+for (row in 1:nrow(df_14)){
+  df_14$shortDn[row] <- html2txt(df_14$shortDn[row])
+  df_14$longDn[row] <- html2txt(df_14$longDn[row])
+}
+
+for (row in 1:nrow(df_15)){
+  df_15$shortDn[row] <- html2txt(df_15$shortDn[row])
+  df_15$longDn[row] <- html2txt(df_15$longDn[row])
+}
+
+df <- rbind(df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10, df_11, df_12, df_13, df_14, df_15) #combining all dfs 
 df <- unique(df)  #removing dupes
 
 ## removing pipes from any data to ensure pipe delimited is clean ##

@@ -9,10 +9,13 @@ sub_cat_list <- unique(df_book_cats$sub_id)
 ################   Pulling catalog data for project. #########################
 ##############################################################################
 
+####                   API requires query text.                  ####
+# Creating 26 unique accumulators to loop through each sub category #
+#    this allows for more titles to populate each major category    #
 accumulator = c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
                 "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
 
-#creating large df
+#### creating large blank df ####
 full_search = data.frame(itemId = character(0), 
                          name= character(0), 
                          msrp = character(0),
@@ -60,8 +63,9 @@ full_search = data.frame(itemId = character(0),
 )
 
 count <- 0
-for(cat in sub_cat_list[51:146]){
+for(cat in sub_cat_list[12:45]){
   for (j in (1:length(accumulator))){
+    Sys.sleep(0.5)
     url <- paste('http://api.walmartlabs.com/v1/search?query=', accumulator[j], 
                  '&format=json&categoryId=', cat, '&apiKey=a8yt7dtv7vjgtq8waassmhra&numItems=25', sep = "")
     for (m in url){
@@ -74,11 +78,9 @@ for(cat in sub_cat_list[51:146]){
       print(cat)
     }
   }
-} # 46:146 for business
+}  #biographies 12:45, Computers 252:315
 
-#  which(sub_cat_list=="3920_582349_3111716") START @ 51
+#  which(sub_cat_list=="3920_582349_3111716")
 
-full_search <- unique(full_search)
-typeof(full_search)
-
-saveRDS(full_search, file="private/health_and_business_cats2.RDS")
+full_search <- unique(full_search) #removing duplicates (likely from restarting failed API)
+saveRDS(full_search, file="private/biographies")
