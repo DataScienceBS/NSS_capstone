@@ -63,7 +63,7 @@ full_search = data.frame(itemId = character(0),
 )
 
 count <- 0
-for(cat in sub_cat_list[12:45]){
+for(cat in sub_cat_list[235:250]){
   for (j in (1:length(accumulator))){
     Sys.sleep(0.5)
     url <- paste('http://api.walmartlabs.com/v1/search?query=', accumulator[j], 
@@ -78,9 +78,10 @@ for(cat in sub_cat_list[12:45]){
       print(cat)
     }
   }
-}  #biographies 12:45, Computers 252:315
+}  # Language/art 599:624 , humor 235:250
 
-#  which(sub_cat_list=="3920_582349_3111716")
+
+#  which(sub_cat_list=="3920_1952589_3409657")
 
 full_search <- unique(full_search) #removing duplicates (likely from restarting failed API)
-saveRDS(full_search, file="private/biographies")
+saveRDS(full_search, file="private/07-01_language_art_humor.RDS")

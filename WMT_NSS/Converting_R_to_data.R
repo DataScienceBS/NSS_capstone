@@ -14,8 +14,14 @@ df_10 <- readRDS('private/full_search_6_23.RDS')
 df_11 <- readRDS('private/full_search_6_23b.RDS') 
 df_12 <- readRDS('private/full_search_6_25.RDS') 
 df_13 <- readRDS('private/health_and_business_cats.RDS') 
-df_14 <- readRDS('private/health_and_business_cats.RDS2') 
-df_15 <- readRDS('private/health_and_business_cats.RDS3') 
+df_14 <- readRDS('private/health_and_business_cats2.RDS') 
+df_15 <- readRDS('private/health_and_business_cats3.RDS') 
+df_16 <- readRDS('private/06-28_history.RDS.RDS3') 
+df_17 <- readRDS('private/06-30_biographies_computers.RDS') 
+df_18 <- readRDS('private/06-30_computers.RDS') 
+
+df <- rbind(df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10, df_11, df_12, df_13, df_14, df_15, df_16, df_17, df_18) #combining all dfs 
+
 
 ##############################################################################
 #################  Cleaning data into useful format ##########################
@@ -146,7 +152,7 @@ for (row in 1:nrow(df_15)){
   df_15$longDn[row] <- html2txt(df_15$longDn[row])
 }
 
-df <- rbind(df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10, df_11, df_12, df_13, df_14, df_15) #combining all dfs 
+  df <- rbind(df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10, df_11, df_12, df_13, df_14, df_15) #combining all dfs 
 df <- unique(df)  #removing dupes
 
 ## removing pipes from any data to ensure pipe delimited is clean ##

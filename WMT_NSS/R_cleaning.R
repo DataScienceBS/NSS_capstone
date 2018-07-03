@@ -65,6 +65,16 @@ df_filtered <- df %>%
   filter(nchar(word) > 3)
 
 
+corp <- Corpus(VectorSource(df_filtered))
+corp <- tm_map(corp, tolower)
+corp <- tm_map(corp, removePunctuation)
+corp <- tm_map(corp, removeWords, stopwords("english"))
+dtm <- DocumentTermMatrix(corp)
+freq <- colSums(as.matrix(dtm))
+ordered_freq <- order(freq)
+top_20 <- freq[tail(ordered_freq, n=20)]
+
+
 #### start exploration ####
 # sources_tidy_balanced %>%
 #   group_by(sub_cat) %>%
