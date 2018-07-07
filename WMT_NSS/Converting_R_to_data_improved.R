@@ -19,8 +19,12 @@ df_15 <- readRDS('private/health_and_business_cats3.RDS')
 df_16 <- readRDS('private/06-28_history.RDS') 
 df_17 <- readRDS('private/06-30_biographies_computers.RDS') 
 df_18 <- readRDS('private/06-30_computers.RDS') 
+df_19 <- readRDS('private/07-01_law.RDS')
+df_20 <- readRDS('private/07-01_language_art_humor.RDS')
 
-df <- rbind(df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10, df_11, df_12, df_13, df_14, df_15, df_16, df_17, df_18) #combining all dfs 
+#combining all dfs 
+df <- rbind(df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10, 
+            df_11, df_12, df_13, df_14, df_15, df_16, df_17, df_18, df_19, df_20) 
 
 df <- data.frame(df$name, df$categoryPath, df$shortDescription, df$longDescription, df$modelNumber, df$categoryNode, df$itemId, df$parentItemId, stringsAsFactors=FALSE)
 df <- unique(df)
@@ -55,10 +59,4 @@ for (row in 1:nrow(df)){
 df[] <- lapply(df, gsub, pattern = "|", replacement = "", fixed = TRUE)
 
 #### write to csv ####
-#write.table(df_1, 'private/small_R_df.csv', sep='|')
-write.table(df, 'private/big_df.csv', sep='|')
-
-
-
-
-# view df after html cleanup. problem with field?
+write.table(df, 'private/big_df_v2.csv', sep='|')
