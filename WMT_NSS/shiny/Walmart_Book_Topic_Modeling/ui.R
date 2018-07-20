@@ -3,10 +3,10 @@ library(shinythemes)
 
 
 shinyUI(fluidPage(theme = shinytheme("flatly"),
-           
+                                    
 #  titlePanel("Topic Modeling with Walmart Books"),
   
-  # Sidebar with a slider input for number of bins 
+  # Nav Bar with side panel and main panels 
 navbarPage(" Walmart Books",
   tabPanel("Background",
            uiOutput("background")
@@ -21,7 +21,7 @@ navbarPage(" Walmart Books",
                            selected = "12")
              )),
              
-             # Show a plot of the generated distribution
+             # Display the pyLDAvis HTML file
              column(9,mainPanel(
                htmlOutput("topic_selected_html")
              )
@@ -36,7 +36,7 @@ navbarPage(" Walmart Books",
                      value = 1)
     ),
     
-    # Show a plot of the generated distribution
+    # Display word clouds for selected topic number
     mainPanel(
        imageOutput("prepareImage")
     )
