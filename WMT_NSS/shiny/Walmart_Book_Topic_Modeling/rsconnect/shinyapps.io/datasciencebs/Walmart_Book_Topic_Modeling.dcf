@@ -1,0 +1,12 @@
+name: Walmart_Book_Topic_Modeling
+title: Walmart_Book_Topic_Modeling
+username:
+account: datasciencebs
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 384985
+bundleId: 1492932
+url: https://datasciencebs.shinyapps.io/Walmart_Book_Topic_Modeling/
+when: 1532199677.69837
+asMultiple: FALSE
+asStatic: FALSE
