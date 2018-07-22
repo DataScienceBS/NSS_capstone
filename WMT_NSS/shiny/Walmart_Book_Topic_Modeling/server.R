@@ -7,7 +7,7 @@ shinyServer(function(input, output) {
 
 #### coherence img ####
   output$coherenceImage <- renderImage({
-    coherencefile <- normalizePath(file.path('./images','coherence.png', sep=''))
+    coherencefile <- paste('./www/coherence.png')
     
     list(src = coherencefile,
          alt = ("Coherence Model"))
@@ -17,9 +17,8 @@ shinyServer(function(input, output) {
   
 #### displaying word cloud ####
   output$prepareImage <- renderImage({
-    filename <- normalizePath(file.path('./images',
-                                        paste('topic_', input$topic, '.png', sep='')))
-    
+    filename <- paste('./www/topic_', input$topic, '.png', sep='')
+  
     # Return a list containing the filename and alt text
     list(src = filename,
          alt = paste("Topic number ", input$topic))
@@ -28,8 +27,9 @@ shinyServer(function(input, output) {
 
 #### topic performance chart ####
   topics <- c(12, 15, 17, 20, 23, 25, 28, 30, 32, 35, 37)
-  coherence <- c(0.5800,0.5800,0.5800, 0.5968, 0.6016, 0.5992, 0.5800, 0.6272, 0.5840, 0.5780,0.6055)
-  perplexity <- c(-8.6222,-8.6222,-8.6222,-8.6538,-8.6508,-8.6222,-8.6175,-8.6095,-8.6117,-8.6202,-8.6380)
+  coherence <- c(0.5871,0.5617,0.5948, 0.5968, 0.6016, 0.5992, 0.5800, 0.6272, 0.5840, 0.5780,0.6055)
+  perplexity <- c(-8.6743,-8.6584,-8.6600,-8.6538,-8.6508,-8.6222,-8.6175,-8.6095,-8.6117,-8.6202,-8.6380)
+  
   
   hc <-  highchart() %>% 
     hc_title(text = "Model performance for a given number of topics") %>% 
@@ -47,7 +47,7 @@ shinyServer(function(input, output) {
   
 #### displaying pyLDAvis HTML files ####
   htmlname <- function(){
-    return(includeHTML(paste0("html/vis_",input$topic_size_selection,".html")))
+    return(includeHTML(paste0("./www/vis_",input$topic_size_selection,".html")))
   }
   output$topic_selected_html <- renderUI({htmlname()})
 

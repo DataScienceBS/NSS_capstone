@@ -11,6 +11,37 @@ navbarPage(" Walmart Books",
   tabPanel("Background",
            uiOutput("background")
            ),
+  
+  
+  tabPanel("Model Performance",
+           fluidRow(
+             tags$head(
+               tags$link(rel = "stylesheet", type = "text/css", href = "flatly.min.css")
+             ),
+             includeCSS("www/flatly.min.css"),
+             column(4,
+                    p(),
+                    ("The performance of each topic was graded on two metrics, coherence and perplexity. See below for the technical details, but essentially you want a higher coherence and lower perplexity. Perplexity is a measure of how well the model describes a set of documents."), 
+                    p(), 
+                    ("As shown in the chart, a model with 30 topics resulted in the best performance. All models in this visual performed with either 40,000 or 50,000 chunksize and 50 passes using the gensim LDA model. Since this model appeared to perform best, word clouds were generated for each topic in this model to give a better visual.")),
+             column(8,
+                    highchartOutput("performance"))),
+           fluidRow(
+             column(4,
+                    h3("Coherence score calculation:"),
+                    tags$ul(),
+                    tags$li("t : Topics coming in from the topic model"),
+                    tags$li(" S : Segmented topics"),
+                    tags$li("P : Calculated probilities"),
+                    tags$li("Phi vector : A vector of the “confirmed measures” coming out from the confirmation module"),
+                    tags$li("c : The final coherence value"),
+                    "Source: ", tags$a(href = "http://svn.aksw.org/papers/2015/WSDM_Topic_Evaluation/public.pdf", "Exploring the Space of Topic Coherence Measures (pdf)")
+             ),
+             column(8,
+                    imageOutput("coherenceImage"))
+           )),
+  
+  
   tabPanel("Topic Sizes",
                 fluidRow(
                   h3("Select the number of topics you wish to categorize Walmart's book catalog:"),
@@ -27,30 +58,6 @@ navbarPage(" Walmart Books",
                         htmlOutput("topic_selected_html")
                    )
            )),
-  tabPanel("Model Performance",
-           fluidRow(
-             column(4,
-                    p(),
-                    ("The performance of each topic was graded on two metrics, coherence and perplexity. See below for the technical details, but essentially you want a higher coherence and lower perplexity. Perplexity is a measure of how well the model describes a set of documents."), 
-                    p(), 
-                    ("As shown in the chart, a model with 30 topics resulted in the best performance. All models in this visual performed with either 40,000 or 50,000 chunksize and 50 passes using the gensim LDA model. Since this model appeared to perform best, word clouds were generated for each topic in this model to give a better visual.")),
-             column(8,
-                    highchartOutput("performance"))),
-           fluidRow(
-             column(4,
-             h3("Coherence score calculation:"),
-             tags$ul(),
-             tags$li("t : Topics coming in from the topic model"),
-             tags$li(" S : Segmented topics"),
-             tags$li("P : Calculated probilities"),
-             tags$li("Phi vector : A vector of the “confirmed measures” coming out from the confirmation module"),
-             tags$li("c : The final coherence value"),
-             "Source: ", tags$a(href = "http://svn.aksw.org/papers/2015/WSDM_Topic_Evaluation/public.pdf", "Exploring the Space of Topic Coherence Measures (pdf)")
-             ),
-             column(8,
-                    imageOutput("coherenceImage"))
-           )),
-  
   
   tabPanel("Topic WordClouds",
     fluidRow(
