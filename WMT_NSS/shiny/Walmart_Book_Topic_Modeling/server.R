@@ -39,19 +39,21 @@ shinyServer(function(input, output) {
     ) %>% 
     hc_add_series(data = coherence, name = "Coherence", color="blue") %>% 
     hc_add_series(data = perplexity, name = "Perplexity", color="black", type = "spline", yAxis = 1) %>% 
-    hc_xAxis(categories = topics, title = list(text = "Number of topics in the trained model")) 
+    hc_xAxis(categories = topics, title = list(text = "Number of topics in the trained model")) %>% 
+    hc_add_theme(hc_theme_elementary())
   
-  
+    
   output$performance <- renderHighchart({hc})
-  
+    
   
 #### displaying pyLDAvis HTML files ####
-  htmlname <- function(){
-    return(includeHTML(paste0("./www/vis_",input$topic_size_selection,".html")))
-  }
-  output$topic_selected_html <- renderUI({htmlname()})
-
-
+  observe({
+  htmlname <- paste0("vis_",input$topic_size_selection,".html")
+  
+  output$topic_selected_html <- renderUI({
+    tags$iframe(seamless="seamless",src=htmlname, height=800, width='100%', frameborder="0")
+    })
+  })
   
 #### text for background section ####
   output$background <- renderUI({

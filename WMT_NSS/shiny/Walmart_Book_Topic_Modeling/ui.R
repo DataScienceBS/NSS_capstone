@@ -12,13 +12,8 @@ navbarPage(" Walmart Books",
            uiOutput("background")
            ),
   
-  
   tabPanel("Model Performance",
            fluidRow(
-             tags$head(
-               tags$link(rel = "stylesheet", type = "text/css", href = "flatly.min.css")
-             ),
-             includeCSS("www/flatly.min.css"),
              column(4,
                     p(),
                     ("The performance of each topic was graded on two metrics, coherence and perplexity. See below for the technical details, but essentially you want a higher coherence and lower perplexity. Perplexity is a measure of how well the model describes a set of documents."), 
