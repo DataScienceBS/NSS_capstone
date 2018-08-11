@@ -5,8 +5,9 @@ account: datasciencebs
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 384985
-bundleId: 1495891
+bundleId: 1497872
 url: https://datasciencebs.shinyapps.io/Walmart_Book_Topic_Modeling/
-when: 1532378112.95753
+when: 1532467103.39871
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: flatly.min.css|testcss.css

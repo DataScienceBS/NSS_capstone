@@ -1,9 +1,9 @@
 library(jsonlite)         # Convert R objects to/from JSON
 library(plyr)             # Tools for Splitting, Applying and Combining Data
 
-#WMT API Key: a8yt7dtv7vjgtq8waassmhra
+#WMT API Key: [enter API key]
 # For Taxonomy API, the only parameter you need to specify is "format" (either json or 
-taxonomy_url <- "http://api.walmartlabs.com/v1/taxonomy?format=json&apiKey=a8yt7dtv7vjgtq8waassmhra"
+taxonomy_url <- "http://api.walmartlabs.com/v1/taxonomy?format=json&apiKey=[enter API key]"
 tax_list <- jsonlite::read_json(taxonomy_url)
 
 # Return 31 categories as of 5/22/18
@@ -67,18 +67,18 @@ saveRDS(df, file="df.RDS")
 #####################################################################
 #####################################################################
 #Book Category is 3920 (pulled from taxonomy list). Finding item IDs, trying to find mapping to 978
-books_url <- "http://api.walmartlabs.com/v1/paginated/items?category=3920_5867480&apiKey=a8yt7dtv7vjgtq8waassmhra&format=json"
+books_url <- "http://api.walmartlabs.com/v1/paginated/items?category=3920_5867480&apiKey=[enter API key]&format=json"
 book_list <- jsonlite::read_json(books_url)
 
 #lookup item ID from book_list, try to find 978
-cat_url <- "http://api.walmartlabs.com/v1/items/189609?apiKey=a8yt7dtv7vjgtq8waassmhra&format=json"
+cat_url <- "http://api.walmartlabs.com/v1/items/189609?apiKey=[enter API key]&format=json"
 cat_test <- jsonlite::read_json(cat_url)
 
 #trending items, limited to 25
-trending_url <- "http://api.walmartlabs.com/v1/trends?apiKey=a8yt7dtv7vjgtq8waassmhra&format=json"
+trending_url <- "http://api.walmartlabs.com/v1/trends?apiKey=[enter API key]&format=json"
 trending <- jsonlite::read_json(trending_url)
 
 #Best Sellers in their respective categories (Books = 3920)
-best_url <- "http://api.walmartlabs.com/v1/feeds/bestsellers?apikey=a8yt7dtv7vjgtq8waassmhra&amp;categoryId=3920"
+best_url <- "http://api.walmartlabs.com/v1/feeds/bestsellers?apikey=[enter API key]&amp;categoryId=3920"
 best_sellers <- jsonlite::read_json(best_url)
 

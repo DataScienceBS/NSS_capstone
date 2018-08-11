@@ -51,15 +51,19 @@ shinyServer(function(input, output) {
   htmlname <- paste0("vis_",input$topic_size_selection,".html")
   
   output$topic_selected_html <- renderUI({
-    tags$iframe(seamless="seamless",src=htmlname, height=800, width='100%', frameborder="0")
+    tags$iframe(seamless="seamless",src=htmlname, height=800, width='100%', frameborder="0", scrolling="no")
     })
   })
   
 #### text for background section ####
   output$background <- renderUI({
     HTML(paste(h3("Walking through the project"), br(),
+               
+               h4("Overview"),
+               "Topic modeling was used to group books of common words and themes into similar categories using the long description of book titles. This long description can range from 3 words to paragraphs, and may include foreign language titles.", br(), br(),
+               
                h4("Data Collection"),  
-               "The goal of this project was to access Walmart's Online Catalog using the ", tags$a(href = "https://developer.walmartlabs.com/", "Walmart Open API"), ". Because of the API limitations of 5,000 calls per day, I set this up in R so that I could run it daily in the background while working with small datasets separately in Python. Through data exploration, I identified the Book category ID and setup a process to loop through 1,285 book subcategories across the 50 main categories. This allowed for me to get a comprehensive list of titles for topic modeling.", br(), br(), 
+               "To accomplish the goal of this project, the ", tags$a(href = "https://developer.walmartlabs.com/", "Walmart Open API"), " was used to access Walmart's Online Catalog. Because of the API limitations of 5,000 calls per day and 25 results per call, an R script was created to run daily title collections in the background while working with small datasets separately in Python. Through data exploration, the Book category ID was identified and used to loop through 1,285 book subcategories across 50 main categories. This allowed for a comprehensive list of titles to be generated for topic modeling across a wide array of subject categories. The resulting dataset included over 250,000 obervations.", br(), br(), 
 
                h4("Data Cleaning"),  
                "There wasn't a huge need for data cleansing, just simple RegEx to remove html, convert contractions to words, and remove extra spaces. The text was also put in entire lowercase and duplicate records were removed. The duplicates were expected as some titles naturally fall into more than one topic (history + biography or memoirs, Law + Business + Education), and the API calls did indeed return titles with overlapping categories. This is expected to be reflected in topic modeling visuals.", br(),br(),
@@ -83,10 +87,9 @@ shinyServer(function(input, output) {
                  tags$li("matplotlib"), 
                  tags$li("pyLDAvis"), 
                  tags$li("WordCloud")
-                  ),br(),
-    
+                  ),
                hr(),
-               h3("Other Information:"),
+               # h3("Other Information:"),
                tags$a(href = "https://www.github.com/DataScienceBS", "DataScienceBS Github Account"),
                br(),
                tags$a(href = "https://www.linkedin.com/in/BSanders21", "Brandon Sanders LinkedIn"),

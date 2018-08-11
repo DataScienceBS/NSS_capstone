@@ -67,7 +67,7 @@ for(cat in sub_cat_list[235:250]){
   for (j in (1:length(accumulator))){
     Sys.sleep(0.5)
     url <- paste('http://api.walmartlabs.com/v1/search?query=', accumulator[j], 
-                 '&format=json&categoryId=', cat, '&apiKey=a8yt7dtv7vjgtq8waassmhra&numItems=25', sep = "")
+                 '&format=json&categoryId=', cat, '&apiKey=[enter API key]&numItems=25', sep = "")
     for (m in url){
       query_list = jsonlite::read_json(m)
       iterator = plyr::rbind.fill(lapply(query_list$items, function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}))

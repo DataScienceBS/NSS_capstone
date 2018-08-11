@@ -8,6 +8,10 @@ shinyUI(fluidPage(theme = shinytheme("flatly"),
   
   # Nav Bar with side panel and main panels 
 navbarPage(" Walmart Books",
+           header=tags$head(tags$style(type='text/css', ".irs-grid-text { font-size: 14pt; }", 
+                                       ".irs-min { font-size: 14pt; }",
+                                       ".irs-max { font-size: 14pt; }",
+                                       ".irs-single { font-size: 11pt; }")),
   tabPanel("Background",
            uiOutput("background")
            ),
@@ -15,7 +19,8 @@ navbarPage(" Walmart Books",
   tabPanel("Model Performance",
            fluidRow(
              column(4,
-                    p(),
+                    br(),
+                    br(),
                     ("The performance of each topic was graded on two metrics, coherence and perplexity. See below for the technical details, but essentially you want a higher coherence and lower perplexity. Perplexity is a measure of how well the model describes a set of documents."), 
                     p(), 
                     ("As shown in the chart, a model with 30 topics resulted in the best performance. All models in this visual performed with either 40,000 or 50,000 chunksize and 50 passes using the gensim LDA model. Since this model appeared to perform best, word clouds were generated for each topic in this model to give a better visual.")),
@@ -39,7 +44,7 @@ navbarPage(" Walmart Books",
   
   tabPanel("Topic Sizes",
                 fluidRow(
-                  h3("Select the number of topics you wish to categorize Walmart's book catalog:"),
+                  h3("Explore the number of topics you think best to categorize Walmart's book catalog:"),
                   br(),
                   column(1,
                          radioButtons("topic_size_selection",
@@ -62,7 +67,10 @@ navbarPage(" Walmart Books",
                      "Topic Cluster:",
                      min = 1,
                      max = 30,
-                     value = 1)
+                     value = 1,
+                     ticks=FALSE),
+         paste0("The topic numbers on the slider correspond to the topics displayed on the preceeding tab, Topic Sizes.") , p() , 
+         paste0("Explore the one hundred words, bigrams, and trigrams that contribute most to each topic by using the slider above.")
     ),
     
     # Display word clouds for selected topic number
